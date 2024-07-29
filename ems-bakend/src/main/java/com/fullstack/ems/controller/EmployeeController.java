@@ -1,8 +1,12 @@
 package com.fullstack.ems.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +25,24 @@ public class EmployeeController {
     private IEmployeeService employeeService;
 
     //Build Add Employee REST API
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<EmployeeDto> createEmployee( @RequestBody EmployeeDto employeeDto){
         EmployeeDto saveEmployeeDto = employeeService.createEmployee(employeeDto);
         return new ResponseEntity<>(saveEmployeeDto , HttpStatus.CREATED);
     }
+
+    //Build GET Employee REST API
+    @GetMapping("{id}")
+    public ResponseEntity<EmployeeDto> getEmployee(@PathVariable("id") Long employeeID){
+        EmployeeDto employeeDto = employeeService.getEmployee(employeeID);
+        return ResponseEntity.ok(employeeDto );
+    }
+
+    //Build ALL Employee REST API
+    @GetMapping
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
+        List<EmployeeDto> employees = employeeService.getAllEmployee();
+        return ResponseEntity.ok(employees);
+    }
+    
 }
